@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Footer from '../Components/footer';
-import { NavBar, CategoryNav } from '../Components/navbar';
+import NavBar  from '../Components/navbar';
+import CategoryNav from '../Components/categoryNav'
 
 export default class productDetails extends Component {
     render() {

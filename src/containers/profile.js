@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../Components/footer';
-import { NavBar, CategoryNav } from '../Components/navbar';
-
-export default class About extends Component {
+import NavBar  from '../Components/navbar';
+import CategoryNav from '../Components/categoryNav';
+import { connect } from 'react-redux';
+class About extends Component {
     render() {
-        console.log(this.props)
+        console.log("Profile==>",this.props)
         return (
             <div>
                 <NavBar />
@@ -20,19 +21,22 @@ export default class About extends Component {
                                 <div className="col-md-8">
                                     <div className="form-group">
                                         <label className="font-weight-bold mb-3">Basic Information</label>
-                                        <input type="text" className="form-control border border-dark" placeholder="full Name" />
+                                        <input type="text" className="form-control border border-dark" defaultValue={this.props.current_user.name} />
                                     </div>
                                     <div className="form-group">
-                                        <textarea className="form-control border border-dark" placeholder="About Me (Optional)" rows={3} defaultValue={""} />
+                                        <textarea className="form-control border border-dark" placeholder="About (Optional)"  rows={3} defaultValue={""} />
                                     </div>
                                     <hr />
                                     <div className="form-group">
                                         <label className="font-weight-bold mb-3">Contact Information</label>
-                                        <input type="email" className="form-control border border-dark" placeholder="user@email.com" />
+                                        <input type="email" className="form-control border border-dark" defaultValue={this.props.current_user.email} placeholder="user@email.com" />
+                                    </div>
+                                    <div className="form-group">
+                                        <input type="email" className="form-control border border-dark" placeholder="+92 333 1234567" defaultValue={this.props.current_user.phoneNumber} />
                                     </div>
                                 </div>
                                 <div className="col-md-4">
-                                    <img className="img-fluid" alt="user-img" src="https://icons.iconarchive.com/icons/custom-icon-design/silky-line-user/512/user-icon.png" />
+                                    <img className="img-fluid h-100"  alt="user-img" src={this.props.current_user.profile} />
                                 </div>
                             </div>
                         </div>
@@ -48,3 +52,16 @@ export default class About extends Component {
         )
     }
 }
+
+
+const mapStateToProps = (state) => ({
+    current_user: state.current_user
+})
+
+
+// const mapDispatchToProps = (dispatch) => ({
+//     //   set_data: (data) => dispatch(set_data(data)),
+//     GoogleSignIn: (data) => dispatch(GoogleSignIn(data))
+
+// })
+export default connect(mapStateToProps, null)(About);

@@ -1,37 +1,39 @@
 import React, { Component } from 'react';
-// import firebaseConfig from '../config/firebaseConfig';
-// import firebase from 'firebase/app';
-import { signInWithGoogle } from '../config/firebaseConfig';
-import { auth } from '../config/firebaseConfig';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { GoogleSignIn, logOut } from '../store/action';
+import firebase from 'firebase/app';
+
 
 class NavBar extends Component {
     constructor() {
         super();
-
         this.state = {
             currentUser: null
         };
     }
 
-    unsubscribeFromAuth = null;
+    unsubscribeFromAuth = null
 
     componentDidMount() {
-        this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+        this.unsubscribeFromAuth = firebase.auth().onAuthStateChanged(user => {
             this.setState({ currentUser: user });
+            console.log("State changed", user);
         });
-    }
 
+    }
     componentWillUnmount() {
         this.unsubscribeFromAuth();
     }
-    
-
-
     render() {
+        // console.log(this.state.currentUser);
+        // console.log("Current User",this.props.current_user);
+        console.log("Current State ==>", this.state.currentUser)
+
+
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light px-4">
-                <Link to="/" className="navbar-brand font-weight-bold mr-5">Olx</Link>
+                <Link to="/" className="navbar-brand font-weight-bold mr-5">OLX</Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon" />
                 </button>
@@ -41,10 +43,10 @@ class NavBar extends Component {
                             <span className="input-group-text" id="basic-addon1"><span className="fa fa-search" /></span>
                         </div>
                         <select className="custom-select">
-                            <option value={0}>Open this select menu</option>
-                            <option value={1}>One</option>
-                            <option value={2}>Two</option>
-                            <option value={3}>Three</option>
+                            <option defaultValue={0}>Open this select menu</option>
+                            <option defaultValue={1}>One</option>
+                            <option defaultValue={2}>Two</option>
+                            <option defaultValue={3}>Three</option>
                         </select>
                     </div>
                     <div className="input-group input-group-search mx-auto">
@@ -65,23 +67,23 @@ class NavBar extends Component {
                                     <div className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <div className="row ">
                                             <div className="col-md-12">
-                                                <img src={this.state.currentUser.photoURL} className="img-fluid rounded-circle" alt="user-img" style={{ width: '60px' }} />
+                                                <img src={this.state.currentUser.photoURL} className="img-fluid rounded-circle" alt={this.state.user} style={{ width: '60px' }} />
                                             </div>
                                         </div>
                                     </div>
+
                                     <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                         <Link className="dropdown-item" to="/profile">Profile</Link>
-                                        <div className="dropdown-item" onClick={() => auth.signOut()}>LogOut</div>
+                                        <div className="dropdown-item" to="/" onClick={() => this.props.logOut()}>LogOut</div>
                                     </div>
                                 </li>
 
                             ) :
                                 <li className="nav-item mr-2 d-flex justify-content-center">
-                                    <button onClick={signInWithGoogle} className="btn btn-white font-weight-bold">Login</button>
+                                    <button onClick={() => this.props.GoogleSignIn()} className="btn btn-white font-weight-bold">Login</button>
                                 </li>
 
                         }
-
 
 
                         <li className="nav-item d-flex justify-content-center">
@@ -89,13 +91,12 @@ class NavBar extends Component {
                                 <i className="fa fa-plus mr-2" /> Sell
                             </Link>
                         </li>
-
-
-
-
-
                     </ul>
                 </div>
+
+                {/* <div>
+                   user ==?{this.state.currentUser.displayName}
+                </div> */}
 
 
             </nav>
@@ -103,82 +104,18 @@ class NavBar extends Component {
     }
 }
 
-class CategoryNav extends Component {
-    render() {
-        return (
-            <div>
-                <ul className="nav">
-                    <li className="nav-item">
-                        <a className="nav-link text-dark font-weight-bold" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            All Categories<i className="fa fa-chevron-down ml-1" />
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link text-dark" to="/">Mobile Phone</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link text-dark" to="/">Cars</Link>
-
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link text-dark" to="/">Motorcycle</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link text-dark" to="/">House</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link text-dark" to="/">TV - Video - Audio</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link text-dark" to="/">Tablets</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link text-dark" to="/">Land &amp; Plots</Link>
-                    </li>
-                </ul>
-                <div className="collapse" id="collapseExample">
-                    <div className="card card-body">
-                        <div className="row">
-                            <div className="col-md-3">
-                                <b>Category - 1</b>
-                                <ul className="categoryList">
-                                    <li>Coffee</li>
-                                    <li>Tea</li>
-                                    <li>Milk</li>
-                                </ul>
-                            </div>
-                            <div className="col-md-3">
-                                <b>Category - 1</b>
-                                <ul className="categoryList">
-                                    <li>Coffee</li>
-                                    <li>Tea</li>
-                                    <li>Milk</li>
-                                </ul>
-                            </div>
-                            <div className="col-md-3">
-                                <b>Category - 1</b>
-                                <ul className="categoryList">
-                                    <li>Coffee</li>
-                                    <li>Tea</li>
-                                    <li>Milk</li>
-                                </ul>
-                            </div>
-                            <div className="col-md-3">
-                                <b>Category - 1</b>
-                                <ul className="categoryList">
-                                    <li>Coffee</li>
-                                    <li>Tea</li>
-                                    <li>Milk</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-
-    }
-}
 
 
-export { NavBar, CategoryNav };
+const mapStateToProps = (state) => ({
+    current_user: state.current_user
+})
+
+
+const mapDispatchToProps = (dispatch) => ({
+    //   set_data: (data) => dispatch(set_data(data)),
+
+    GoogleSignIn: (data) => dispatch(GoogleSignIn(data)),
+    logOut: (data) => dispatch(logOut(data)),
+
+})
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
