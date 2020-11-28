@@ -53,19 +53,47 @@ const logOut = () => {
                 })
 
             })
-        // dispatch({
-        //     type: "LOGOUT",
-        //     payload: null
-        // })
-        // this.props.history.push('/')
-
         console.log("Logout Running")
 
     }
-
-
 }
+
+const Add_product = (data) => {
+    return (dispatch) => {
+
+        let product = {
+            category: data.category,
+            title: data.title,
+            price: data.price,
+            description: data.description,
+            state: data.state,
+            name: data.name,
+            contact: data.contact
+        }
+
+        // firebase.database().ref('/').child("todos").push(obj);
+        
+
+        firebase.database().ref('/').child(`products/${data.category}`).push(product)
+            .then(() => {
+                dispatch({
+                    type: "ADD_PRODUCT",
+                    data: product
+                })
+                alert("Send Successful");
+            });
+
+        // dispatch({
+        //     type: "ADD_PRODUCT",
+        //     data: product
+        // })
+        console.log("data recieved ===> ", data)
+    }
+}
+
+
 export {
     GoogleSignIn,
-    logOut
+    logOut,
+    Add_product
 }

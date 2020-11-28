@@ -1,8 +1,54 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Add_product } from '../store/action'
 
-export default class Profile extends Component {
+class AddProduct extends Component {
+    constructor() {
+        super()
+        this.state = {
+            products: {
+                category: '',
+                title: '',
+                price: '',
+                description: '',
+                state: '',
+                name: '',
+                contact: ''
+            }
+        }
+    }
+
+    handleSubmit = (event) => {
+        const { category, title, price, description, state, name, contact } = this.state.products
+        this.props.Add_product(this.state.products)
+        // console.log('State Here ==>', this.state.products)
+        event.preventDefault()
+        alert(` 
+          ____Your Details____\n 
+          category: ${category},
+            title: ${title},
+            price: ${price},
+            description: ${description},
+            state: ${state},
+            name: ${name},
+            contact: ${contact}
+        `)
+    }
+
+    handleChange = (event) => {
+        this.setState({
+            products: {
+                ...this.state.products, [event.target.name]: event.target.value
+            }
+        })
+        // console.log("Input ==>", event.target.value)
+    }
+
     render() {
+        // let products = this.state;
+        // console.log('Add Product==>', products)
+        console.log("Props Recieved==>",this.props)
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light px-4">
@@ -13,111 +59,116 @@ export default class Profile extends Component {
                         <div className="card-header bg-white">
                             <h4 className="text-center font-weight-bold">POST YOUR AD</h4>
                         </div>
-                        <div className="card-body">
-                            <div className="row">
-                                <div className="col">
-                                    <label className="font-weight-bold">SELECT CATEGORY</label>
-                                    <select className="form-control border border-dark">
-                                        <option>Select Category</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                                <div className="col">
-                                    <label className="font-weight-bold">SELECT CATEGORY</label>
-                                    <select className="form-control border border-dark">
-                                        <option>Select Sub-Category</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <hr className="my-4" />
-                            <h5 className="font-weight-bold my-3">INCLUDE SOME DETAILS</h5>
-                            <div className="form-group">
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="card-body">
                                 <div className="row">
                                     <div className="col">
-                                        <label>Ad Title*</label>
-                                        <input type="text" className="form-control border border-dark" />
-                                        <small className="form-text text-muted">Mention the key features of your item (e.g. brand, model, age, type)</small>
-                                    </div>
-                                    <div className="col">
-                                        <label>Set Price*</label>
-                                        <div className="input-group border border-dark rounded">
-                                            <div className="input-group-prepend ">
-                                                <span className="input-group-text" id="inputGroupPrepend2">Rs.</span>
-                                            </div>
-                                            <input type="text" className="form-control" aria-describedby="inputGroupPrepend2" required />
-                                        </div>
+                                        <label className="font-weight-bold">SELECT CATEGORY</label>
+                                        <select name="category" onChange={this.handleChange} className="form-control border border-dark">
+                                            <option>Select Category</option>
+                                            <option value="cars">Cars</option>
+                                            <option value="bikes">Bikes</option>
+                                            <option value="plots">Plots</option>
+                                            <option value="mobiles">Mobiles</option>
+                                        </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label>Description*</label>
-                                <textarea className="form-control border border-dark" rows={3} defaultValue={""} />
-                            </div>
-                            <hr className="my-4" />
-                            <h5 className="font-weight-bold">UPLOAD PHOTOS</h5>
-                            <small className="form-text text-muted">Select 3 Images of your Item</small>
-                            <div className="form-group">
-                                <div className="row">
-                                    <div className="col-md-6 mt-3">
-                                        <button type="button" className="btn btn-outline-dark px-4 py-3 mx-1"><i className="fa fa-camera" /></button>
-                                        <button type="button" className="btn btn-outline-dark px-4 py-3 mx-1"><i className="fa fa-camera" /></button>
-                                        <button type="button" className="btn btn-outline-dark px-4 py-3 mx-1"><i className="fa fa-camera" /></button>
-                                    </div>
-                                    <div className="col-md-6">
-                                    </div>
-                                </div>
-                            </div>
-                            <hr className="my-4" />
-                            <h5 className="font-weight-bold">CONFIRM YOUR LOCATION</h5>
-                            <div className="form-group">
-                                <label>State*</label>
-                                <select className="form-control border border-dark">
-                                    <option />
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                            <hr className="my-4" />
-                            <h5 className="font-weight-bold mb-5">REVIEW YOUR DETAILS</h5>
-                            <div className="row">
-                                <div className="col-md-2">
-                                    <img className="img-fluid" alt="user-img" src="https://icons.iconarchive.com/icons/custom-icon-design/silky-line-user/512/user-icon.png" />
-                                </div>
-                                <div className="col">
+                                <hr className="my-4" />
+                                <h5 className="font-weight-bold my-3">INCLUDE SOME DETAILS</h5>
+
+                                <div className="form-group">
                                     <div className="row">
-                                        <div className="col-md-12 mb-3">
-                                            <label>Name*</label>
-                                            <input type="text" className="form-control border border-dark" />
+                                        <div className="col">
+                                            <label>Ad Title*</label>
+                                            <input name="title" onChange={this.handleChange} type="text" className="form-control border border-dark" />
+                                            <small className="form-text text-muted">Mention the key features of your item (e.g. brand, model, age, type)</small>
                                         </div>
-                                        <div className="col-md-12 mb-3">
+                                        <div className="col">
                                             <label>Set Price*</label>
                                             <div className="input-group border border-dark rounded">
                                                 <div className="input-group-prepend ">
-                                                    <span className="input-group-text" id="inputGroupPrepend2">+92</span>
+                                                    <span className="input-group-text" id="inputGroupPrepend2">Rs.</span>
                                                 </div>
-                                                <input type="text" className="form-control" aria-describedby="inputGroupPrepend2" required />
+                                                <input type="text" onChange={this.handleChange} name="price" className="form-control" aria-describedby="inputGroupPrepend2" required />
                                             </div>
-                                            <small className="form-text text-muted">This phone number will be shown on your ads</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label>Description*</label>
+                                    <textarea onChange={this.handleChange} className="form-control border border-dark" rows={3} name="description" />
+                                </div>
+                                <hr className="my-4" />
+                                <h5 className="font-weight-bold">UPLOAD PHOTOS</h5>
+                                <small className="form-text text-muted">Select 3 Images of your Item</small>
+                                <div className="form-group">
+                                    <div className="row">
+                                        <div className="col-md-6 mt-3">
+                                            <button type="button" className="btn btn-outline-dark px-4 py-3 mx-1"><i className="fa fa-camera" /></button>
+                                            <button type="button" className="btn btn-outline-dark px-4 py-3 mx-1"><i className="fa fa-camera" /></button>
+                                            <button type="button" className="btn btn-outline-dark px-4 py-3 mx-1"><i className="fa fa-camera" /></button>
+                                        </div>
+                                        <div className="col-md-6">
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr className="my-4" />
+                                <h5 className="font-weight-bold">CONFIRM YOUR LOCATION</h5>
+                                <div className="form-group">
+                                    <label>State*</label>
+                                    <select name="state" onChange={this.handleChange} className="form-control border border-dark">
+                                        <option />
+                                        <option value="sindh">Sindh</option>
+                                        <option value="balochistan">Balochistan</option>
+                                        <option value="punjab">Punjab</option>
+                                        <option value="kpk">KPK</option>
+                                        <option value="gilgit">Gilgit Baltistan</option>
+                                    </select>
+                                </div>
+                                <hr className="my-4" />
+                                <h5 className="font-weight-bold mb-5">REVIEW YOUR DETAILS</h5>
+                                <div className="row">
+                                    <div className="col-md-2">
+                                        <img className="img-fluid" alt="user-img" src="https://icons.iconarchive.com/icons/custom-icon-design/silky-line-user/512/user-icon.png" />
+                                    </div>
+                                    <div className="col">
+                                        <div className="row">
+                                            <div className="col-md-12 mb-3">
+                                                <label>Name*</label>
+                                                <input name="name" onChange={this.handleChange} type="text" className="form-control border border-dark" placeholder="Owner Name" />
+                                            </div>
+                                            <div className="col-md-12 mb-3">
+                                                <label>Contact No.*</label>
+                                                <div className="input-group border border-dark rounded">
+                                                    <div className="input-group-prepend ">
+                                                        <span className="input-group-text" id="inputGroupPrepend2">+92</span>
+                                                    </div>
+                                                    <input name="contact" onChange={this.handleChange} type="text" className="form-control" aria-describedby="inputGroupPrepend2" required />
+                                                </div>
+                                                <small className="form-text text-muted">This phone number will be shown on your ads</small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="card-footer bg-white">
-                            <button className="btn btn-secondary">Post Now</button>
-                        </div>
+                            <div className="card-footer bg-white">
+                                <button className="btn btn-secondary">Post Now</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    current_user: state.current_user,
+    products : state.products
+})
+
+
+const mapDispatchToProps = (dispatch) => ({
+      Add_product: (data) => dispatch(Add_product(data)),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(AddProduct);
