@@ -1,5 +1,4 @@
-// import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import NavBar from '../Components/navbar';
 import CategoryNav from '../Components/categoryNav'
 import Footer from '../Components/footer';

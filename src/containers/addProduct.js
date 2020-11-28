@@ -18,7 +18,7 @@ export default class Profile extends Component {
                                 <div className="col">
                                     <label className="font-weight-bold">SELECT CATEGORY</label>
                                     <select className="form-control border border-dark">
-                                        <option selected>Select Category</option>
+                                        <option>Select Category</option>
                                         <option>2</option>
                                         <option>3</option>
                                         <option>4</option>
@@ -28,7 +28,7 @@ export default class Profile extends Component {
                                 <div className="col">
                                     <label className="font-weight-bold">SELECT CATEGORY</label>
                                     <select className="form-control border border-dark">
-                                        <option selected>Select Sub-Category</option>
+                                        <option>Select Sub-Category</option>
                                         <option>2</option>
                                         <option>3</option>
                                         <option>4</option>

@@ -58,6 +58,7 @@ const logOut = () => {
         //     payload: null
         // })
         // this.props.history.push('/')
+
         console.log("Logout Running")
 
     }

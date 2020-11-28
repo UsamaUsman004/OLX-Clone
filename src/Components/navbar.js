@@ -26,8 +26,6 @@ class NavBar extends Component {
         this.unsubscribeFromAuth();
     }
     render() {
-        // console.log(this.state.currentUser);
-        // console.log("Current User",this.props.current_user);
         console.log("Current State ==>", this.state.currentUser)
 
 
@@ -84,21 +82,19 @@ class NavBar extends Component {
                                 </li>
 
                         }
-
-
                         <li className="nav-item d-flex justify-content-center">
-                            <Link className="sellbtn text-center py-2 border border-dark bg-white rounded text-dark font-weight-bold" to="/addproduct">
+                            <button
+                                onClick={
+                                    () => this.state.currentUser ? window.location.href += 'addproduct'
+                                        :
+                                        this.props.GoogleSignIn()
+                                }
+                                className="sellbtn text-center py-2 border border-dark bg-white rounded text-dark font-weight-bold">
                                 <i className="fa fa-plus mr-2" /> Sell
-                            </Link>
+                            </button>
                         </li>
                     </ul>
                 </div>
-
-                {/* <div>
-                   user ==?{this.state.currentUser.displayName}
-                </div> */}
-
-
             </nav>
         );
     }
