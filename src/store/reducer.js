@@ -9,15 +9,7 @@ const INITIAL_STATE = {
             email: "usmanali@gmail.com"
         }
     ],
-    products: {
-        category: 'abc',
-        title: 'hello',
-        price: '123',
-        description: 'hi',
-        state: 'pk',
-        name: 'mani',
-        contact: '1234'
-    },
+    products: [],
     current_user: {}
 }
 

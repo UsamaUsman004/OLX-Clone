@@ -1,5 +1,6 @@
 import firebaseConfig from '../config/firebaseConfig';
 import firebase from 'firebase/app';
+import { useStore } from 'react-redux';
 
 // const set_data = (data) => {
 //     return (dispatch) => {
@@ -42,6 +43,8 @@ const GoogleSignIn = () => {
 
 }
 
+
+
 const logOut = () => {
 
     return (dispatch) => {
@@ -68,32 +71,74 @@ const Add_product = (data) => {
             description: data.description,
             state: data.state,
             name: data.name,
-            contact: data.contact
+            contact: data.contact,
+            url: data.url,
+            file: data.file
         }
 
-        // firebase.database().ref('/').child("todos").push(obj);
-        
 
-        firebase.database().ref('/').child(`products/${data.category}`).push(product)
-            .then(() => {
-                dispatch({
-                    type: "ADD_PRODUCT",
-                    data: product
-                })
-                alert("Send Successful");
-            });
 
-        // dispatch({
-        //     type: "ADD_PRODUCT",
-        //     data: product
-        // })
-        console.log("data recieved ===> ", data)
+        var ref = firebase.storage().ref().child(`images/${product.file.name}`).put(product.file)
+        ref.on('state_changed', function (snapshot) {
+            //progress
+        },
+            function (error) {
+                //error
+            },
+            function () {
+                //complete
+                ref.snapshot.ref.getDownloadURL()
+                    .then(function (downloadURL) {
+                        console.log('File available at', downloadURL);
+                        product.url = downloadURL
+                        // console.log("Product yeh milrhai hai", product)
+
+                        firebase.database().ref('/').child(`products/`).push(product)
+                            .then(() => {
+                                // dispatch({
+                                //     type: "ADD_PRODUCT",
+                                //     data: product
+                                // })
+                                alert("Send Successful");
+                            });
+                        // dispatch({
+                        //     type: "ADD_PRODUCT",
+                        //     data: product
+                        // })
+                    });
+            }
+        );
+
     }
 }
+
+
+const get_products = (data) => {
+    return (dispatch) => {
+        let Products = [];
+        
+        firebase.database().ref('/').child(`products/`).on('child_added', (data) => {
+            console.log("Products==>", data.val())
+            Products.push(data.val())
+            dispatch({
+                type: "ADD_PRODUCT",
+                data: Products
+            })
+        })
+
+        
+
+
+    }
+}
+
+
+
 
 
 export {
     GoogleSignIn,
     logOut,
-    Add_product
+    Add_product,
+    get_products
 }
